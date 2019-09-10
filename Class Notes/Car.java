@@ -8,16 +8,57 @@
 public class Car
 {
     /*
-     * Instance variables store the object's attributes.
+     * 2. Instance variables store the object's attributes.
      *      specify the visibility (eg, private)
      *          public: accessible by anyone
      *          private: only accessible by methods in this class
      *      specify the type (e.g., double)
      *      specify the name (e.g., fuelEfficiency, fuelInTank)
      *  
-     *  
+     *  Instance variables differ from local variables in the following ways:
+     *      scoped to their class (accessible for all methods)
+     *      automatically initialized to a default value (0, false, null)
+     *      best practice is not to immediately initialize instance variables
      */
     private double fuelEfficiency; // in units of miles per gallon
+    private double fuelInTank;  // in units of gallons
+    private String vin; // vehicle identification
+    
+    
+    /*
+     * 3. Define the constructor(s):
+     *      responsible for initializing newly created objects
+     *      invoked automatically via the new operator
+     *      name of the constructor must match the name of the class
+     *      has no return type (not even void)
+     *      multiple  constuctors may be defined for a class
+     *      one constructor may call another constructor (with restrictions)
+     */
+    
+    /**
+     * Default constructor for the Car class.
+     *      Initializes the fuel efficiency to 30 mpg and the fuel in this car's tank to 0 gallons.
+     */
+    public Car()
+    {
+    }
+    
+    /**
+     * Constructs a new Car object with the specified fuel efficiency
+     * 
+     * @param initialFuelEfficiency     the initial fuel efficiency, in miles per gallon, of this new car
+     */
+    public Car(double initialFuelEfficiency)
+    {
+    }
+    
+    /*
+     * 1. Define the methods:
+     *      the visibility (e.g, public)
+     *      the return type (e.g., void)
+     *      the method name (e.g., drive)
+     *      the parameters and their type (e.g., distance of type double)
+     */
     
     /**
      * Drives this car the specified distance, consuming fuel
