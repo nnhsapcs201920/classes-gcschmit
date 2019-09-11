@@ -41,6 +41,13 @@ public class Car
      */
     public Car()
     {
+        /*
+         * The "this" reserved word references the current object (like "self" Python)
+         *  Its usage is encouraged but only sometimes required.
+         */
+        this.fuelEfficiency = 30;
+        this.fuelInTank = 0;
+        this.vin = null;
     }
     
     /**
@@ -50,6 +57,7 @@ public class Car
      */
     public Car(double initialFuelEfficiency)
     {
+        
     }
     
     /*
