@@ -57,7 +57,20 @@ public class Car
      */
     public Car(double initialFuelEfficiency)
     {
-        
+        /*
+         * If the parameter was named fuelEfficiency, it would "shadow" the instance variable
+         *      fuelEfficiency.
+         *      
+         *  Local and parameter variables "shadow" instance variables of the same name. In this code,
+         *      fuelEfficiency would refer to the parameter and not the instance variable.
+         *  
+         *  To refer explicitly to the instance variable, use "this".
+         *  
+         *  Advice: avoid this issue by giving parameters, local, and instance variables unique names!
+         */
+        this.fuelEfficiency = initialFuelEfficiency;
+        this.fuelInTank = 0;
+        this.vin = null;
     }
     
     /*
@@ -75,6 +88,8 @@ public class Car
      */
     public void drive(double distance)
     {
+        double fuelConsumed = distance / this.fuelEfficiency;
+        this.fuelInTank -= fuelConsumed;
     }
     
     /**
@@ -84,6 +99,7 @@ public class Car
      */
     public void addFuel(double amount)
     {
+        this.fuelInTank += amount;
     }
     
     /**
@@ -93,7 +109,7 @@ public class Car
      */
     public double getFuelInTank()
     {
-        return 0.0;
+        return this.fuelInTank;
     }
     
     /**
@@ -103,7 +119,7 @@ public class Car
      */
     public String getVIN()
     {
-        return "";
+        return this.vin;
     }
     
     /**
@@ -113,6 +129,7 @@ public class Car
      */
     public void setVIN(String newVIN)
     {
+        this.vin = newVIN;
     }
 }
 
