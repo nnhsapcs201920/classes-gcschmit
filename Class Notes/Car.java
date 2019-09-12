@@ -42,6 +42,14 @@ public class Car
      */
     public Car()
     {
+        /*
+         * The "this" reserved word references the current object (like "self" in Python).
+         * 
+         * Its usage is encouraged but only sometimes required.
+         */
+        this.fuelEfficiency = 30;
+        this.fuelInTank = 0;
+        this.vin = null;
     }
     
     /**
@@ -51,6 +59,9 @@ public class Car
      */
     public Car(double initialFuelEfficiency)
     {
+        this.fuelEfficiency = initialFuelEfficiency;
+        this.fuelInTank = 0;
+        this.vin = null;
     }
     
     
@@ -69,6 +80,8 @@ public class Car
      */
     public void drive(double distance)
     {
+        double fuelConsumed = distance / this.fuelEfficiency;
+        this.fuelInTank -= fuelConsumed;
     }
     
     /**
@@ -78,6 +91,7 @@ public class Car
      */
     public void addFuel(double amount)
     {
+        this.fuelInTank += amount;
     }
     
     /**
@@ -87,7 +101,7 @@ public class Car
      */
     public double getFuelInTank()
     {
-        return 0.0;
+        return this.fuelInTank;
     }
     
     /**
@@ -97,7 +111,7 @@ public class Car
      */
     public String getVIN()
     {
-        return "";
+        return this.vin;
     }
     
     /**
@@ -107,6 +121,17 @@ public class Car
      */
     public void setVIN(String newVIN)
     {
+        /*
+         * If the parameter was named vin, it would "shadow" the instance variable vin.
+         * 
+         *  Local and parameter variables "shadow" instance variables of the same name.
+         *      In this code, vin would refer to the parameter variable and not the instance variable.
+         *  
+         *  To refer explicitly to an instance variable, use "this".
+         *  
+         *  Advice: avoid this issue by giving local, parameter, and instance variables unique names!
+         */
+        this.vin = newVIN;
     }
 }
 
