@@ -133,6 +133,20 @@ public class Car
          */
         this.vin = newVIN;
     }
+    
+    /**
+     * Returns a String that describes the state of this car.
+     * 
+     * @return a String that describes the state of this car
+     */
+    public String toString()
+    {
+        String str = "VIN: " + this.getVIN() +
+                "; fuel efficiency: " +  this.fuelEfficiency +
+                "mpg; fuel in tank: " + this.getFuelInTank() + " gallons";
+                
+        return str;
+    }
 }
 
 
