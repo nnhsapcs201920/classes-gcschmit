@@ -77,17 +77,21 @@ public class CaesarCipher
         int secondsPerGuess = s.nextInt();
     }
     
-    /**
-     * Formats the average time to crack the cipher based on the specific number of seconds and
-     *      displays via System.out in several formats.
-     *      
+    /*
      *  This method is static and, therefore, is independent of the state of a CaesarCipher object.
      *      As a result, this method may be invoked on the class instead of a variable that referenes
      *      an object (e.g., CaesarCipher.printAverageTimeToCrack(1000000);)
      *      In addition, this method cannot access any instance variables.
      *      
+	 */
+	 
+    /**
+     * Formats the average time to crack the cipher based on the specific number of seconds and
+     *      displays via System.out in several formats.
+     *      
      *  @param totalSeconds     the average number of seconds to crack the cipher
      */
+     
     
     public static void printAverageTimeToCrack(long totalSeconds)
     {
