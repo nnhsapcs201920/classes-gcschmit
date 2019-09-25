@@ -109,6 +109,67 @@ public class CaesarCipher
         
         // if we try to change the value, a compiler error will be generated
         //SECONDS_FOR_EVERY_MINUTE = 30;
+        
+        /*
+         * Use integer division to calculate how many whole minutes based on the specified
+         *      number of  seconds.
+         *  
+         *  Integer division (like // operator in Python) discards the remainder (truncates).
+         *  
+         *  Java does integer division when both operands are integer types;
+         *      floating-point division occurs when one or both operands are floating-point types.
+         *      
+         *  For example:
+         *      3 / 4 = 0       (3 and 4 are int literals)
+         *      3.0 / 4 = 0.75  (3.0 is a double literal)
+         */
+        long totalMinutes = totalSeconds / SECONDS_FOR_EVERY_MINUTE;
+        
+        /*
+         * Use the modulo (mod, remainder) operator to calculate how many seconds are leftover.
+         * 
+         *  The mod operator (%) returns the remainder of the division operation.
+         *  
+         *  It can be very useful when paired with integer division.
+         *  
+         *  For example:
+         *      7 % 2 = 1
+         *      11 % 3 = 2
+         *      6 % 2 = 0
+         *      4 % 11 = 4
+         *      
+         *  % 2 is frequently used to test odd/even (odd => 1; even => 0)
+         */
+        long seconds = totalSeconds % SECONDS_FOR_EVERY_MINUTE;
+        
+        long totalHours = totalMinutes / MINUTES_FOR_EVERY_HOUR;
+        long minutes =  totalMinutes % MINUTES_FOR_EVERY_HOUR;
+        
+        long totalDays = totalHours / HOURS_FOR_EVERY_DAY;
+        long hours = totalHours % HOURS_FOR_EVERY_DAY;
+        
+        long years = totalDays / DAYS_FOR_EVERY_YEAR;
+        long days = totalDays % DAYS_FOR_EVERY_YEAR;
+        
+        System.out.println("Average time to crack: " + years + " years, " + days + " days, " +
+                hours + " hours, " + minutes + " minutes, " + seconds +  " seconds");
+                
+        /*
+         * A conversion is when a data value is converted from one type to another
+         *      (e.g., int to a double, double to an int, int to a long).
+         *      
+         *  Widening: preserves information (e.g., int to a double, int to a long)
+         *  Narrowing: lossy; may lose information (e.g., double to an int)
+         *  
+         *  Java only automatically performs widening conversions.
+         *  
+         *  This is a widening conversion:
+         */
+        double yearsAsDecimal = totalSeconds;
+        
+        
+        final long SECONDS_FOR_EVERY_YEAR = SECONDS_FOR_EVERY_MINUTE * MINUTES_FOR_EVERY_HOUR *
+                HOURS_FOR_EVERY_DAY * DAYS_FOR_EVERY_YEAR;
     }
     
     
