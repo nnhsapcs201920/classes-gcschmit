@@ -20,7 +20,7 @@ public class CaesarCipher
      *      new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
      */
     private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    
+
     public static void main(String[] args)
     {
         /*
@@ -37,7 +37,7 @@ public class CaesarCipher
          *      (e.g., System.in which is the keyboard via ther terminal).
          */
         Scanner s = new Scanner(System.in);
-        
+
         /*
          * Best practices:
          *      1. prompt the user for what you want them to input
@@ -46,24 +46,24 @@ public class CaesarCipher
          *      3. leave a space after the prompt
          */
         System.out.print("Enter the text to encrypt: ");
-        
+
         /*
          * The nextLine method returns all the characters up to the end of the line
          *      (i.e., where the user typed enter).
          */
         String text = s.nextLine();
         text = text.toUpperCase();
-        
+
         System.out.print("Enter the keyphrase (no spaces): ");
-        
+
         /*
          * The next method returns the next token in the stream as a String.
          */
         String keyphrase = s.next();
         keyphrase = keyphrase.toUpperCase();
-        
+
         System.out.print("Enter the number of seconds to test a guessed keyphrase: ");
-        
+
         /*
          * The nextInt method attempts to convert the next token in the stream to an int
          *      and returns the value. If the next token cannot be converted, an exception
@@ -72,13 +72,11 @@ public class CaesarCipher
          *  The nextDouble method behaves in the same way for doubles.
          */
         int secondsPerGuess = s.nextInt();
-        
+
         // prepare the keyphrase by removing duplicate letters
         //keyphrase = CaesarCipher.compressKeyphrase(keyphrase);
-        
-        
+
     }
-    
     /**
      * Formats the average time to crack the cipher based on the specified number of seconds and
      *      displays via System.out in several formats.
@@ -106,10 +104,10 @@ public class CaesarCipher
         final int MINUTES_FOR_EVERY_HOUR = 60;
         final int HOURS_FOR_EVERY_DAY = 24;
         final int DAYS_FOR_EVERY_YEAR = 365;
-        
+
         // if we try to change the value, a compiler error will be generated
         //SECONDS_FOR_EVERY_MINUTE = 30;
-        
+
         /*
          * Use integer division to calculate how many whole minutes based on the specified
          *      number of  seconds.
@@ -124,7 +122,7 @@ public class CaesarCipher
          *      3.0 / 4 = 0.75  (3.0 is a double literal)
          */
         long totalMinutes = totalSeconds / SECONDS_FOR_EVERY_MINUTE;
-        
+
         /*
          * Use the modulo (mod, remainder) operator to calculate how many seconds are leftover.
          * 
@@ -141,19 +139,19 @@ public class CaesarCipher
          *  % 2 is frequently used to test odd/even (odd => 1; even => 0)
          */
         long seconds = totalSeconds % SECONDS_FOR_EVERY_MINUTE;
-        
+
         long totalHours = totalMinutes / MINUTES_FOR_EVERY_HOUR;
         long minutes =  totalMinutes % MINUTES_FOR_EVERY_HOUR;
-        
+
         long totalDays = totalHours / HOURS_FOR_EVERY_DAY;
         long hours = totalHours % HOURS_FOR_EVERY_DAY;
-        
+
         long years = totalDays / DAYS_FOR_EVERY_YEAR;
         long days = totalDays % DAYS_FOR_EVERY_YEAR;
-        
+
         System.out.println("Average time to crack: " + years + " years, " + days + " days, " +
-                hours + " hours, " + minutes + " minutes, " + seconds +  " seconds");
-                
+            hours + " hours, " + minutes + " minutes, " + seconds +  " seconds");
+
         /*
          * A conversion is when a data value is converted from one type to another
          *      (e.g., int to a double, double to an int, int to a long).
@@ -166,14 +164,95 @@ public class CaesarCipher
          *  This is a widening conversion:
          */
         double yearsAsDecimal = totalSeconds;
-        
-        
+
+        /*
+         * Arthimetic Promotion
+         * 
+         *  If the two operands are of different types, Java attempts to promote one of the types
+         *      (widening conversion) and then perform the operation.
+         *      
+         *  In this case, SECONDS_FOR_EVERY_MINUTE and MINUTES_FOR_EVERY_HOUR are ints; so,
+         *      Java doesn't perform any promotion and, instead, performs the multiplication and
+         *      stores the result as an int. Only after all three multiplications does Java promote the
+         *      int value of the resulting product to a long and then assign it to
+         *      SECONDS_FOR_EVERY_YEAR.
+         *      
+         *  This promotion may be too late! If the multiplication overflows an int, the wrong value
+         *      will be promoted to a long and stored.
+         */
         final long SECONDS_FOR_EVERY_YEAR = SECONDS_FOR_EVERY_MINUTE * MINUTES_FOR_EVERY_HOUR *
-                HOURS_FOR_EVERY_DAY * DAYS_FOR_EVERY_YEAR;
+            HOURS_FOR_EVERY_DAY * DAYS_FOR_EVERY_YEAR;
+
+        /*
+         * In this example, the value of SECONDS_FOR_EVERY_YEAR is promoted to a double and then
+         *      floating-point division is performed and assigned to yearsAsDecimal.
+         *  
+         *  The local variable SECONDS_FOR_EVERY_YEAR is still a long and still has the same value.
+         */
+        yearsAsDecimal = yearsAsDecimal / SECONDS_FOR_EVERY_YEAR;
+
+        System.out.println("or " + yearsAsDecimal + " years");
+
+        /*
+         * To force a narrowing conversion, use the cast operator.
+         *      A cast is the "I know what I'm doing; trust me" conversion.
+         *  
+         *  (int)(84.69) => truncated to an int with a value of 84
+         *  
+         *  If we want to round a double to the nearest int, use the Math.round method:
+         *      public static long round(double value)
+         *  
+         *  The following divides yearsAsDecimal by 10 (floating-point division), then rounds the
+         *      resulting double to the nearest decade, and then casts the resulting long to an int.
+         */
+        int decades = (int)(Math.round(yearsAsDecimal / 10));
+        System.out.println("or about " + decades + " decades");
     }
-    
-    
-    
+
+    /**
+     * Compresses the specified keyphrase by removing all duplicate letters.
+     * 
+     * @param keyphrase     the keyphrase to compress
+     * @return              the keyphrase with all duplicate letters removed
+     */
+    public static String compressKeyphrase(String keyphrase)
+    {
+        String compressedKeyphrase = "";
+
+        /*
+         * length
+         *       returns the number of characters in the string
+         */
+        int keyphraseLength = keyphrase.length();
+
+        for(int i = 0; i < keyphraseLength; i++)
+        {
+            /*
+             * charAt
+             *       returns the character (of type char) at the specified index (0-based)
+             *       
+             *  keyphrase:
+             *  C A E S A R
+             *  0 1 2 3 4 5     <= indicies
+             *  
+             *  length = 6
+             */
+            char letter = keyphrase.charAt(i);
+            
+            /*
+             * substring
+             *      returns part of the string starting at the first index and up to,
+             *          but not including, the second index
+             *      if only one index is specified, returns  part of the string starting at the
+             *          index through the end of the string
+             *      substring does not support negative indicies
+             *          For example, instead of -2, specify keyphrase.length()-2 as the argument
+             */
+            
+
+        }
+    }
+
     
     /**
      * Encrypts the specified text using the specified keyphrase using a
@@ -246,7 +325,7 @@ public class CaesarCipher
         final int NUMBER_OF_LETTERS_IN_ALPHABET = 26;
         int lettersRemaining = NUMBER_OF_LETTERS_IN_ALPHABET;
         long combinations = 1;
-        
+
         /*
          * Calculate the number of combintations for the specified keyphrase length.
          *  For example, if the keyphrase is six characters long:
