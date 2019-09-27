@@ -167,9 +167,81 @@ public class CaesarCipher
          *  Java only automatically performs widening conversions.
          */
         double yearsAsDecimal = totalSeconds;
+        
+        /*
+         * Arithmetic Promotion
+         * 
+         *  If the two operands are of different types, Java attempts to promote one of the operands
+         *      (widening conversion) and then performs the operation.
+         *      
+         *  In this case, both SECONDS_FOR_EVERY_MINUTE and MINUTES_FOR_EVERY_HOUR are ints;
+         *      so, Java doesn't perform any promotion, and instead, performs the multiplication
+         *      and store the result as an int. Only after all three multiplications does
+         *      Java promote the int value of the resulting product to a long and then assigns it
+         *      to SECONDS_FOR_EVERY_YEAR.
+         *      
+         *  This promotion may be too late! If the multiplication overflows an int, the wrong value
+         *      will be promoted to a long and stored.
+         */
+        final long SECONDS_FOR_EVERY_YEAR = SECONDS_FOR_EVERY_MINUTE * MINUTES_FOR_EVERY_HOUR *
+                HOURS_FOR_EVERY_DAY * DAYS_FOR_EVERY_YEAR;
+        
+        /*
+         * In this example, the value of SECONDS_FOR_EVERY_YEAR is promoted to a double and then
+         *      floating-point division is performed and assigned to yearsAsDecimal.
+         *      
+         *  The local variable SECONDS_FOR_EVERY_YEAR is still a long and still has the same value.
+         */
+        yearsAsDecimal = yearsAsDecimal / SECONDS_FOR_EVERY_YEAR;
+        System.out.println("or " + yearsAsDecimal + "  years");
+        
+        /*
+         * To force a narrowing conversion, use the cast operator.
+         *      A cast is the "I know what I'm doing; trust me" conversion.
+         *      
+         *  (int)(84.69) => truncates to an int with a value of 84
+         *  
+         *  If we want to round a double to the nearest integer value, use Math.round method:
+         *      public static long round(double value)
+         *      
+         *  The following divides yearsAsDecimal by 10, then rounds the resulting double value to the
+         *      nearest decade, and then casts the restuling long to an int.
+         */
+        int decades = (int)(Math.round(yearsAsDecimal / 10));
+        System.out.println("or about " + decades + " decades");
     }
     
-    
+    /**
+     * Compresses the specified keyphrase by removing all duplicate letters.
+     * 
+     * @param keyphrase     the keyphrase to compress
+     * @return              the keyphrase with all duplicate letters removed
+     */
+    public static String compressKeyphrase(String keyphrase)
+    {
+        String compressedKeyphrase = "";
+        
+        /*
+         * length
+         *      returns the number of characters in the string
+         */
+        int keyphraseLength = keyphrase.length();
+        
+        for(int i = 0; i < keyphraseLength; i++)
+        {
+            /*
+             * charAt
+             *      returns the character (of type char) at the specified index (0-based)
+             *      
+             *  keyphrase:
+             *  C A E S A R
+             *  0 1 2 3 4 5     <= indicies
+             *  
+             *  length = 6
+             */
+            char letter = keyphrase.charAt(i);
+        }
+    }
     
     
     
