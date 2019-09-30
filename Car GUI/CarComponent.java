@@ -5,6 +5,7 @@ import javax.swing.JComponent;
 /**
    This component draws two car shapes.
 */
+@Override
 public class CarComponent extends JComponent
 {  
    public void paintComponent(Graphics g)

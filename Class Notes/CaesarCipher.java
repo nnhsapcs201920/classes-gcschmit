@@ -74,8 +74,27 @@ public class CaesarCipher
         int secondsPerGuess = s.nextInt();
 
         // prepare the keyphrase by removing duplicate letters
-        //keyphrase = CaesarCipher.compressKeyphrase(keyphrase);
-
+        keyphrase = CaesarCipher.compressKeyphrase(keyphrase);
+        
+        long averageTimeToCrack = CaesarCipher.calculateAverageTimeToCrack(
+                keyphrase.length(), secondsPerGuess);
+                
+        CaesarCipher.printAverageTimeToCrack(averageTimeToCrack);
+        
+        String encryptedText = CaesarCipher.encrypt(text, keyphrase);
+        System.out.println("Encrypted: " + encryptedText);
+        
+        /*
+         * The Math.random static method returns a double  [0.0 ... 1.0).
+         * 
+         *  Often we use the following algorithm to generate a random integer from min (inclusive)
+         *      to max (inclusive):
+         *      
+         *      int n = (int)((Math.random() * (max - min + 1)) + min);
+         *      
+         *  For example: generate a random int [1 ... 26]
+         */
+        int letterIndex = (int)((Math.random() * 26) + 1);
     }
     /**
      * Formats the average time to crack the cipher based on the specified number of seconds and
@@ -243,14 +262,51 @@ public class CaesarCipher
              * substring
              *      returns part of the string starting at the first index and up to,
              *          but not including, the second index
-             *      if only one index is specified, returns  part of the string starting at the
+             *      if only one index is specified, returns part of the string starting at the
              *          index through the end of the string
              *      substring does not support negative indicies
-             *          For example, instead of -2, specify keyphrase.length()-2 as the argument
+             *          For example, instead of -2, specify keyphrase.length()-2 as the argument 
+             *          
+             *  keyphrase:
+             *  C A E S A R
+             *  0 1 2 3 4 5     <= indicies
+             *  
+             *  length = 6
              */
+            String restOfKeyphrase = keyphrase.substring(i + 1);
+            // equivalent to: keyphrase.substring(i + 1, keyphrase.length())
             
-
+            /*
+             * indexOf
+             *      returns the index of the start of the first occurrence of the specified string
+             *      if not found, returns -1
+             *      
+             *  restOfKeyphrase:
+             *  A E S A R
+             *  0 1 2 3 4       <= indicies
+             *  
+             *  length = 5
+             */
+            int index = restOfKeyphrase.indexOf(letter);
+            
+            /*
+             * String concatenation
+             *      + is the string concatentation operator
+             *      concatenates the second string operand to the end of the first string operand
+             *      if one or both operands are String types, + is the string concatenation operator
+             *          (operands are converted to Strings); otherwise, + is the addition operator
+             *          
+             *  int x = 7;
+             *  String xAsString = "" + x;      // xAsString => "7"
+             */
+            if(index == -1)     // if a duplicate letter was not found
+            {
+                compressedKeyphrase = compressedKeyphrase + letter;
+                // same as: compressedKeyphrase += letter;
+            }
         }
+        
+        return compressedKeyphrase;
     }
 
     
@@ -307,7 +363,7 @@ public class CaesarCipher
     }
 
     /**
-     * Calcualtes the average time to crack the cipher, based on the
+     * Calculates the average time to crack the cipher, based on the
      *      specified length of the keyphrase and seconds to evaluate
      *      each attempt, using a brute force approach. This calculation
      *      assumes that the cracker knows the length of the keyphrase.
@@ -343,6 +399,6 @@ public class CaesarCipher
 
         // average time is half the worst time since the best time is cracking the
         //  cipher on the first attempt
-        return worstCaseTimeToCrack/2;
+        return worstCaseTimeToCrack / 2;
     }
 }
