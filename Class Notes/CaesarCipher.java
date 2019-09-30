@@ -76,6 +76,28 @@ public class CaesarCipher
          */
         int secondsPerGuess = s.nextInt();
         
+        // prepare the keyphrase by removing duplicate letters
+        keyphrase = CaesarCipher.compressKeyphrase(keyphrase);
+        
+        long averageTimeToCrack = CaesarCipher.calculateAverageTimeToCrack(
+                keyphrase.length(), secondsPerGuess);
+                
+        CaesarCipher.printAverageTimeToCrack(averageTimeToCrack);
+        
+        String encryptedText = CaesarCipher.encrypt(text, keyphrase);
+        System.out.println("Encrypted:  " + encryptedText);
+        
+        
+        /*
+         * The Math.random static method returns a double [0.0 ... 1.0).
+         * 
+         *  Often we use the following algorithm to generate a random number [min ... max]:
+         * 
+         *      int n = (int)((Math.random() * (max - min + 1)) + min);
+         *      
+         *  For example: generate a random int [1 ... 26]
+         */
+        int letterNum = (int)((Math.random() * 26) + 1);
     }
     
     
@@ -270,9 +292,27 @@ public class CaesarCipher
              *  length = 5
              */
             int index = restOfKeyphrase.indexOf(letter);
+            
+            /*
+             * String concatentation
+             *      + is the string concatenation operator
+             *      concatenates the second String operand to the end of the first String operand
+             *      if one or both operands are a String type, + is the string concatenation
+             *          operator (operands are converted to String objects); otherwise, + is
+             *          the addition operator
+             *          
+             *  int x = 7;
+             *  String xAsString = "" + x;      // xAsString => "7"
+             */
+            if(index == -1)     // if letter is not a duplicate letter
+            {
+                compressedKeyphrase = compressedKeyphrase + letter;
+                // same as:  compressedKeyphrase += letter;
+            }
         }
+        
+        return compressedKeyphrase;
     }
-    
     
     
     /**
@@ -328,7 +368,7 @@ public class CaesarCipher
     }
 
     /**
-     * Calcualtes the average time to crack the cipher, based on the
+     * Calculates the average time to crack the cipher, based on the
      *      specified length of the keyphrase and seconds to evaluate
      *      each attempt, using a brute force approach. This calculation
      *      assumes that the cracker knows the length of the keyphrase.
