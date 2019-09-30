@@ -75,6 +75,28 @@ public class CaesarCipher
          *  The nextDouble method behaves in the same way for doubles.
          */
         int secondsPerGuess = s.nextInt();
+        
+        // prepare the keyphrase by removing duplicate letters
+        keyphrase = CaesarCipher.compressKeyphrase(keyphrase);
+        
+        long averageTimeToCrack = CaesarCipher.calculateAverageTimeToCrack(
+                keyphrase.length(), secondsPerGuess);
+                
+        CaesarCipher.printAverageTimeToCrack(averageTimeToCrack);
+        
+        String encryptedText = CaesarCipher.encrypt(text, keyphrase);
+        System.out.println("Encrypted: " + encryptedText);
+        
+        /*
+         * The Math.random static method returns a double [0.0 ... 1.0).
+         * 
+         *  Often we use the following algorithm to generate random integers from [min ... max]:
+         *  
+         *      int n = (int)((Math.random() * (max - min + 1)) + min);
+         *      
+         *  For example: generate a random int [1 ... 6]
+         */
+        int dieRoll = (int)((Math.random() * 6) +  1);
     }
     
     /*
@@ -240,7 +262,56 @@ public class CaesarCipher
              *  length = 6
              */
             char letter = keyphrase.charAt(i);
+            
+            /*
+             * substring
+             *      returns part of the string starting at the first index up to, but not including,
+             *          the second index
+             *      if only one index is specified, returns part of the string starting at the index
+             *          through the end of the string
+             *      substring does not support negative indicies
+             *          For example, instead of -2, we would specify keyphrase.length() - 2.
+             *          
+             *  keyphrase:
+             *  C A E S A R
+             *  0 1 2 3 4 5     <= indicies
+             *  
+             *  length = 6
+             */
+            String restOfKeyphrase = keyphrase.substring(i + 1);
+            // same as: keyphrase.substring(i + 1, keyphrase.length());
+            
+            /*
+             * indexOf
+             *      returns the index of the start of the first occurrence of the specified string
+             *      if not found, returns -1
+             *      
+             *  restOfKeyphrase:
+             *  A E S A R
+             *  0 1 2 3 4       <= indicies
+             *  
+             *  length = 5
+             */
+            int index = restOfKeyphrase.indexOf(letter);
+            
+            /*
+             * String concatenation
+             *      + is the string concatenation operator
+             *      concatenates the second String operand to the end of the first String operand
+             *      if one or both operands are a String type, + is the string concatentation operator
+             *          (operands are converted to String objects); otherwise, + is the addition operator
+             *          
+             *  int x = 7;
+             *  String xAsString = "" + x;      // xAsString => "7"
+             */
+            if(index == -1)     // if the letter is not a duplicate
+            {
+                compressedKeyphrase = compressedKeyphrase + letter;
+                // same as: compressedKeyphrase += letter;
+            }
         }
+        
+        return compressedKeyphrase;
     }
     
     
