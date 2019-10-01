@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 */
 public class CarComponent extends JComponent
 {  
+   @Override
    public void paintComponent(Graphics g)
    {  
       Graphics2D g2 = (Graphics2D) g;  // cast to Graphics2D object
